@@ -5,13 +5,6 @@ class Story {
   def rooms = [:]
   def currentRoom
   
-  public Story(config) {
-    title = config.title
-    description = config.description
-    config.rooms.each { roomConfig -> rooms[roomConfig.id] = new Room(this, roomConfig) }
-    goToRoom(config.startsAt)
-  }
-  
   def interpret(command) {
     def commandArray = command.tokenize()
     if (commandArray.isEmpty()) {

@@ -1,6 +1,7 @@
 <project name="Groovy Adventures">
   
-  <!-- This is terrible -->
+  <!-- This is a terrible build file -->
+  
   <target name="unit-tests">
     <exec executable="sh">
       <arg line="-c 'groovy -cp lib test/RoomTest.groovy'" />
@@ -8,6 +9,12 @@
     <exec executable="sh">
       <arg line="-c 'groovy -cp lib test/StoryTest.groovy'" />
     </exec>    
+  </target>
+  
+  <target name="basic-integration">
+    <exec executable="sh">
+      <arg line="-c 'groovy -cp lib test/BasicIntegrationTest.groovy'" />
+    </exec>
   </target>
   
 </project>

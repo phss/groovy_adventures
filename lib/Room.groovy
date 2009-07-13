@@ -1,18 +1,12 @@
 class Room {
 
   def story
-  def id
   def title
   def description
-  def actions
+  def actions = [:]
   
-  public Room(story, roomConfig) {
+  public Room(story) {
     this.story = story
-    
-    id = roomConfig.id
-    title = roomConfig.title
-    description = roomConfig.description
-    actions = roomConfig.actions
   }
   
   def display() {

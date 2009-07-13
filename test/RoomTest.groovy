@@ -3,25 +3,15 @@ import groovy.mock.interceptor.*
 
 class RoomTest extends GroovyTestCase {
   
-  def config = [
-    id: "blah", 
-    title: "Some room", 
-    description: "You are in a very boring room"
-  ]
-  
-  void testRoomAttributes() {
-    def room = new Room(null, config)
-    assertEquals "blah", room.id
-    assertEquals "Some room", room.title
-    assertEquals "You are in a very boring room", room.description
-  }
-  
   void testRoomDisplay() {
     def expectedDisplay = """-- Some room --
 
-You are in a very boring room
+You are in a very boring room.
 """
-    assertEquals expectedDisplay, new Room(null, config).display()
+    def room = new Room(null)
+    room.title = "Some room"
+    room.description = "You are in a very boring room."
+    assertEquals expectedDisplay, room.display()
   }
   
   void testPerformingAnAction() {
@@ -49,11 +39,13 @@ You are in a very boring room
   }
   
   void testPerformingAnUnknownActionReturnErrorMessage() {
-    assertEquals "Unknown action 'unknown'", new Room(null, config).perform("unknown")
+    assertEquals "Unknown action 'unknown'", new Room(null).perform("unknown")
   }
   
   def roomWithAction(story, action) {
-    new Room(story, config + [ actions: action ])
+    def room = new Room(story)
+    room.actions += action
+    return room
   }
   
 }

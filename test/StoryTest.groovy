@@ -2,47 +2,16 @@ import groovy.util.GroovyTestCase
 
 class StoryTest extends GroovyTestCase {
   
-  def storyConfig = [
-    title: "Blah",
-    description: "Some random story",
-    startsAt: "first",
-    rooms: [
-      [
-        id: "second",
-        title: "Another place",
-        description: "Another random place"
-      ],    
-      [
-        id: "first",
-        title: "Some place",
-        description: "This is some random place",
-        actions: [
-          go: { story -> story.go_to_room("second") }
-        ]
-      ]
-    ]
-  ]
-  
-  void testConstructStory() {
-    def story = new Story(storyConfig)
-    
-    assertEquals "Blah", story.title
-    assertEquals "Some random story", story.description
-    assert story.rooms.containsKey("first")
-    assert story.rooms.containsKey("second")
-    assertEquals "first", story.currentRoom.id    
-  }
-  
   void testDisplaysCurrentRoom() {
     def expectedDisplay = """-- Some place --
 
 This is some random place
 """
-    assertEquals expectedDisplay, new Story(storyConfig).viewRoom()
+    assertEquals expectedDisplay, newStoryWithARoom("Some place", "This is some random place").viewRoom()
   }
   
   void testInterpretActionWithoutParamsFromCurrentRoom() {
-    def story = new Story(storyConfig)
+    def story = newStoryWithARoom()
     story.currentRoom.actions += [
       test_action: { params, storyParam -> 
         assertEquals story, storyParam
@@ -55,7 +24,7 @@ This is some random place
   }
   
   void testInterpretActionWithParamsFromCurrentRoom() {
-    def story = new Story(storyConfig)
+    def story = newStoryWithARoom()
     story.currentRoom.actions += [
       test_action: { params, storyParam -> 
         assertEquals story, storyParam
@@ -68,24 +37,37 @@ This is some random place
   }
   
   void testInterpretUnknownActionShouldReturnUnknownAction() {
-    assertEquals "Unknown action 'test_action'", new Story(storyConfig).interpret("test_action")
+    assertEquals "Unknown action 'test_action'", newStoryWithARoom().interpret("test_action")
   }
   
   void testInterpretBlankCommandReturnBlank() {
-    assertEquals "", new Story(storyConfig).interpret("")    
+    assertEquals "", newStoryWithARoom().interpret("")    
   }
   
   void testGoToExistingRoom() {
-    def story = new Story(storyConfig)
-    story.goToRoom("second")
+    def story = newStoryWithARoom("some room")
+    def anotherRoom = new Room(story)
+    anotherRoom.title = "another room"
+    story.rooms += [ another: anotherRoom ]
+    story.goToRoom("another")
     
-    assertEquals "second", story.currentRoom.id
+    assertEquals "another room", story.currentRoom.title
   }
   
   void testGoingToAnUknownRoomDoesNotFail() {
-    def story = new Story(storyConfig)
+    def story = newStoryWithARoom("some room")
     story.goToRoom("unknown")
     
-    assertEquals "first", story.currentRoom.id
+    assertEquals "some room", story.currentRoom.title
+  }
+  
+  def newStoryWithARoom(title = "", description = "") {
+    def story = new Story()
+    def room = new Room(story)
+    room.title = title
+    room.description = description
+    story.rooms += [ room: room ]
+    story.goToRoom("room")
+    return story
   }
 }

@@ -68,4 +68,6 @@ actionsStory = [
   ]
 ]
 
-StoryRunner.play(basicStory)
+/*StoryRunner.play(basicStory)*/
+
+StoryRunner.play("examples/BasicStory.groovy")
