@@ -14,6 +14,14 @@ class StoryDelegate {
     story.description = description
   }
   
+  void globalAction(String name, Closure action) {
+    story.globalActions += [ (name): action ]
+  }
+  
+  void alias(alias, command) {
+    story.alias += [ (alias): command ]
+  }
+  
   void startsAt(roomId) {
     story.goToRoom(roomId)
   }

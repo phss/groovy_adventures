@@ -1,46 +1,42 @@
-actionsStory = [
-  title: "Actions",
-  description: "Some random story",
-  startsAt: "center_room",
+story {
+  title "A meeting"
+  description "An exciting story about a meeting."
   
-  globalActions: [
-    go: { params, story -> story.go_to_room(story.currentRoom.directions[params[0]]) }
-  ],
+  globalAction("view") { params, story -> story.viewRoom() }
+  globalAction("go") { params, story -> story.goToLink(params[0]); story.viewRoom() }
+  globalAction("help") { params, story -> story.viewActions() }
   
-  aliases: [
-    n: "go north",
-    s: "go south",
-    w: "go west",
-    e: "go east"   
-  ],
-  
-  rooms: [
-    [
-      id: "center_room",
-      title: "Center",
-      description: "This is the center",
-      directions: [
-        north: "north_room",
-        south: "south_room"
-      ]
-    ],
+  alias "n", "go north"
+  alias "s", "go south"
+  alias "w", "go west" 
+  alias "e", "go east"    
     
-    [
-      id: "north_room",
-      title: "North",
-      description: "This is north of the center",
-      directions: [
-        south: "center_room"
-      ]
-    ],
+  room("meetingRoom") {
+    title "Meeting room"
+    description """You are in the youDevise Ltd meeting room attending a retrospective meeting.
     
-    [
-      id: "south_room",
-      title: "South",
-      description: "This is south of the center",
-      directions: [
-        north: "center_room"
-      ]
-    ]
-  ]
-]
+Everything seems really positive! The whiteboard if full of green stickies \
+and everyone is pleased with the last release. It suddently dawns on you that this can't be real \
+and you realise you are either dreaming or stuck in a stupid game."""
+
+    link "south", "office"
+
+    action("ask") { params, story -> "You ask '${params.join(" ")}' but everyone ignores you. They are too busy \
+praising the browser build speeds. It is under 5 minutes! This is clearly a dream." }
+  }
+  
+  room("office") {
+    title "Office"
+    description "It looks quite empty, probably because all your team is in the retrospective."
+    
+    link "north", "meetingRoom"
+    link "east", "exit"
+  }
+  
+  room("exit") {
+    title "Exit"
+    description "Goodbye!"
+  }
+  
+  startsAt "meetingRoom"
+}

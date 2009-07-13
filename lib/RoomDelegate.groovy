@@ -14,6 +14,10 @@ class RoomDelegate {
     room.description = description
   }
   
+  void link(name, aRoom) {
+    room.links += [ (name): aRoom ]
+  }
+  
   void action(String name, Closure action) {
     room.actions += [ (name): action ]
   }

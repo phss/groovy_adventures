@@ -4,7 +4,7 @@ class StoryRunner {
     def story = loadStory(new File(fileName))
     println story.viewRoom()
     
-    while(!story.currentRoom.actions.isEmpty()) {
+    while(!story.currentRoom.links.isEmpty()) {
       print ">> "
       def result = story.interpret(System.in.newReader().readLine())
       if (result) {

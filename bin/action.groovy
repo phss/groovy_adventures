@@ -1,0 +1,1 @@
+StoryRunner.play("examples/ActionStory.groovy")
