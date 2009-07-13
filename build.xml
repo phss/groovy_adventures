@@ -1,0 +1,13 @@
+<project name="Groovy Adventures">
+  
+  <!-- This is terrible -->
+  <target name="unit-tests">
+    <exec executable="sh">
+      <arg line="-c 'groovy -cp lib test/RoomTest.groovy'" />
+    </exec>
+    <exec executable="sh">
+      <arg line="-c 'groovy -cp lib test/StoryTest.groovy'" />
+    </exec>    
+  </target>
+  
+</project>
