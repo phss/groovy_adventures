@@ -23,4 +23,10 @@
     </exec>
   </target>
   
+  <target name="inventory-integration">
+    <exec executable="sh">
+      <arg line="-c 'groovy -cp lib test/ActionIntegrationTest.groovy'" />
+    </exec>
+  </target>
+  
 </project>

@@ -7,7 +7,7 @@ class ActionIntegrationTest extends GroovyTestCase {
   void setUp() {
     story = StoryRunner.loadStory(new File("examples/ActionStory.groovy"))
   }
-  
+
   void testLinkNavigation() {
     assert story.interpret("view").contains("-- Meeting room --")
 
@@ -20,6 +20,13 @@ class ActionIntegrationTest extends GroovyTestCase {
     assert story.interpret("go south").contains("-- Office --")
     assert story.interpret("go west").contains("-- Office --")
     assert story.interpret("go east").contains("-- Exit --")
+  }
+  
+  void testRoomDescriptionShowsLinks() {
+    assert story.interpret("view").contains("-- Meeting room --")
+    assert story.interpret("view").contains("You can go 'south' to the office.")
+    
+    assert story.interpret("go south").contains("You can go 'north' to the meetingRoom, 'east' to the exit.")
   }
   
   void testAliases() {
@@ -48,3 +55,4 @@ class ActionIntegrationTest extends GroovyTestCase {
     assert !story.interpret("help").contains("ask")    
   }
 }
+

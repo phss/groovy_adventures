@@ -6,7 +6,7 @@ story {
   globalAction("go") { params, story -> story.goToLink(params[0]); story.viewRoom() }
   globalAction("inventory") { params, story -> story.showInventory() }
   globalAction("get") { params, story -> story.get(params[0]) }
-  globalAction("combine") { params, story -> story.combine(params[0], params[1]) }  
+  globalAction("combine") { params, story -> story.combine(params) }  
   globalAction("use") { params, story -> story.use(params[0], params[1]) }
   globalAction("help") { params, story -> story.viewActions() }
   
@@ -15,6 +15,10 @@ story {
   alias "w", "go west" 
   alias "e", "go east"
   alias "i", "inventory"
+  
+  item name: "clip", description: "a paper clip"
+  item name: "rubberBand", description: "a rubber band...of course"
+  item name: "key", description: "a magic key", combine: ["clip", "rubberBand"]
     
   room("meetingRoom") {
     title "Meeting room"
@@ -24,8 +28,7 @@ Everything seems really positive! The whiteboard is full of green stickies \
 and everyone is pleased with the last release. It suddently dawns on you that this can't be real \
 and you realise you are either dreaming or stuck in a stupid game."""
 
-    item "paperClip", "at the table"
-    item "rubberBand", "on the floor"
+    items "clip", "rubberBand"
 
     link "south", "office"
 
@@ -35,11 +38,9 @@ praising the browser build speeds. It is under 5 minutes! This is clearly a drea
   
   room("office") {
     title "Office"
-    description "It looks quite empty, probably because all your team is in the retrospective."
-
-    item "door", "which is locked"
+    description "It looks quite empty, probably because all your team is in the retrospective. The door is locked. How will you open it?"
     
-    use("clips", "door") { story -> story.goToRoom("exit") }
+    item_action("key", "door") { story -> story.goToRoom("exit") }
     
     link "north", "meetingRoom"
   }
